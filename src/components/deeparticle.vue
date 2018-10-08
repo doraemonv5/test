@@ -16,7 +16,7 @@
             <button @click='up_comment'>提交评论</button>
 
         </div>
-        <div><span class="glyphicon glyphicon-thumbs-up" @click='agree_up'></span><span>点赞数{{agree_num}}</span><span>
+        <div><span class="glyphicon glyphicon-star-empty" @click='collect_up'></span><span>收藏数{{collect_num}}</span><span>
         评论数{{comment_num}}</span></div>
 
         
@@ -28,7 +28,7 @@
     export default{
         name:'deeparticle',
         data(){
-            return{agree_num:null,
+            return{collect_num:null,
                 thiscomment:null,
                 comment_num:null,
                 article_id:null,
@@ -46,7 +46,7 @@
         methods:{
             initpage(){
                 this.$store.dispatch('getarticledetail',this.$route.params.id);
-            this.agree_num = this.$store.state.articledetail.agree_num
+            this.collect_num = this.$store.state.articledetail.collect_num
             this.comment_num=this.$store.state.articledetail.comment_num
             this.article_id = this.$store.state.articledetail.id
             },
@@ -79,8 +79,22 @@
 
 
             },
-            agree_up(){
-
+            collect_up(){
+                var _this= this;
+                this.$axios.request({
+                    url:'http://127.0.0.1:8000/api/V1/deeptech/'+_this.article.id+'/collect/',
+                    method:'get',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    params:{
+                        user:_this.$store.state.username,
+                    }
+                }).then(function(data){
+                    if (data.data.code===1000){
+                        alert('收藏成功')
+                    }
+                })
             },
 
         },
