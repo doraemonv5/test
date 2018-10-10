@@ -93,6 +93,7 @@
                 }).then(function(data){
                     if (data.data.code===1000){
                         alert('收藏成功')
+                        _this.initpage()
                     }
                 })
             },
